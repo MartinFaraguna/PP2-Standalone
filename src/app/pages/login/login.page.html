@@ -1,0 +1,39 @@
+<div class="ion-page" id="main-content">
+  <ion-content class="ion-padding">
+    <form #form="ngForm" class="form" (ngSubmit)="onLogin()">
+      <ion-input
+        label="Email"
+        labelPlacement="floating"
+        placeholder="Ingresa tu email laboral"
+        type="email"
+        name="email"
+        fill="outline"
+        required
+      ></ion-input>
+
+      <ion-text
+        color="danger"
+        *ngIf="form.submitted && !form.controls['email']?.valid"
+      >
+        <ion-label>Por favor ingresa un correo válido.</ion-label>
+      </ion-text>
+
+      <br />
+      <ion-input
+        label="Password"
+        labelPlacement="floating"
+        placeholder="Ingresa tu contraseña"
+        type="password"
+        name="password"
+        fill="outline"
+        required
+      >
+      </ion-input>
+
+      <ion-button shape="round" type="submit" class="ion-margin-top"
+        >Iniciar Sesión</ion-button
+      >
+    </form>
+  </ion-content>
+</div>
+
