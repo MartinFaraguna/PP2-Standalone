@@ -1,6 +1,7 @@
 <div class="ion-page" id="main-content">
   <ion-content class="ion-padding">
-    <form #form="ngForm" class="form" (ngSubmit)="onLogin()">
+    <form class="form" [formGroup]="form" (ngSubmit)="onLogin()" (keypress.enter)='onLogin()'>
+
       <ion-input
         label="Email"
         labelPlacement="floating"
@@ -8,17 +9,21 @@
         type="email"
         name="email"
         fill="outline"
-        required
+        formControlName="email"
       ></ion-input>
 
-      <ion-text
-        color="danger"
-        *ngIf="form.submitted && !form.controls['email']?.valid"
-      >
-        <ion-label>Por favor ingresa un correo válido.</ion-label>
-      </ion-text>
+      <div class="validators">
+        <div *ngIf="form.get('email')?.errors?.['required'] && form.get('email')?.touched" >
+          El email es obligatorio.
+        </div>
+        <div *ngIf="form.get('email')?.errors?.['email']">
+          El email debe ser válido.
+        </div>
+      </div>
+      <!-- </div> -->
 
-      <br />
+
+      <ion-icon name="arrow-redo-outline"></ion-icon>
       <ion-input
         label="Password"
         labelPlacement="floating"
@@ -26,14 +31,23 @@
         type="password"
         name="password"
         fill="outline"
-        required
+        formControlName="password"
       >
       </ion-input>
 
-      <ion-button shape="round" type="submit" class="ion-margin-top"
+      <div class="validators">
+        <div *ngIf="form.get('password')?.errors?.['required'] && form.get('password')?.touched" >
+          El password es obligatorio.
+        </div>
+        <div *ngIf="form.get('password')?.errors?.['minLength']">
+          <h1>El password debe tener al menos 6 caracteres.</h1>
+        </div>
+      </div>
+
+
+      <ion-button shape="round" type="submit" class="ion-margin-top" [disabled]="form.invalid"
         >Iniciar Sesión</ion-button
       >
     </form>
   </ion-content>
 </div>
-
