@@ -6,9 +6,11 @@ export interface User {
 }
 
 export interface Ticket {
+  id: number;
   nombre: string;
   apellido: string;
   usuario: string;
   telefono: number;
   descripcion: string;
+  estado: 'abierto' | 'cerrado' | 'en progreso';
 }

@@ -1,0 +1,22 @@
+ion-list {
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0px;
+}
+
+ion-item {
+  --background: #f9f9f9;
+  --color: #333;
+  margin: 0px !important;
+  padding: 0px !important;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.selector-eliminar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

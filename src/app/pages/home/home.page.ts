@@ -19,24 +19,38 @@ export class HomePage implements OnInit {
 
     this.databaseSvc.getTickets().subscribe((data) => {
       this.ticket = data;
+      console.log('Tickets obtenidos:', this.ticket);
     })
   }
 
   add() {
+    this.databaseSvc.getTickets().subscribe((data) => {
+      this.ticket = data;
+      console.log('Tickets obtenidos:', this.ticket);
+    })
     this.databaseSvc
       .createTicket({
+        id: 0, // Asignar un ID único basado en la longitud del array
         nombre: 'Nuevo',
         apellido: 'Usuario',
         usuario: 'nuevoUsuario',
         telefono: 123456789,
         descripcion: 'Descripción del nuevo ticket',
+        estado: 'abierto',
       })
       .then((data) => {
-        console.log('Ticket agregado exitosamente: ' + data);
+        console.log('Ticket agregado exitosamente:');
       })
       .catch((error) => {
         console.error('Error al agregar el ticket:', error);
       });
   }
+
+  delete(ticketId: number) {
+    this.databaseSvc.deleteTicket(ticketId).then(() => {
+      console.log('Ticket eliminado exitosamente' + ticketId);
+    })
+  }
+  
   ngOnInit() {}
 }
