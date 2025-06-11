@@ -1,16 +1,16 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../../services/authentication.service';
+import { validarEmail } from '../../utils/validations';
+import { ToastController } from '@ionic/angular';
+
+
 import { CommonModule } from '@angular/common';
 import {
-  FormControl,
-  FormGroup,
   FormsModule,
-  Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { FirebaseService } from 'src/app/services/firebase.service';
-import { User } from 'src/models/user.model';
-import { UtilsService } from 'src/app/services/utils.service';
 
 @Component({
   selector: 'app-login',
@@ -20,35 +20,70 @@ import { UtilsService } from 'src/app/services/utils.service';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class LoginPage implements OnInit {
-  form = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
+  email: string = '';
+  password: string = '';
 
   constructor(
-    private firebaseSvc: FirebaseService,
-    private utilsSvc: UtilsService
+    private authService: AuthenticationService,
+    private router: Router,
+    private toastController: ToastController
+
   ) {}
 
+  /**
+   * @function login
+   * @description esta función utiliza el servicio de autenticación 'authService' para autenticar al usuario con su correo y contraseña, dependiendiendo del resultado de la autenticación es redirigidio a otra página o muestra un mensaje de error. Tambien valida el formato del mail.
+   */
   async onLogin() {
-    const loading = await this.utilsSvc.loading();
-    await loading.present();
+    // Validar email y contraseña utilizando las funciones importadas
+    if (!validarEmail(this.email)) {
+      this.presentToast('Por favor, ingrese un email válido');
+      return;
+    }
 
-    this.firebaseSvc
-      .signIn(this.form.value as User)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(async() => {
-        await loading.dismiss();
-      });
+    try {
+      await this.authService.logIn(this.email, this.password);
+      this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Error logging in:', error);
+      this.presentToast('Error al iniciar sesión, revise los datos ingresados');
+    }
   }
 
-  ngOnInit() {}
+
+
+  /**
+   * @function loginGoogle
+   * @description esta función utiliza el servicio de autenticación 'authService' para autenticar al usuario a través de una cuenta de Google, 
+   * dependiendiendo del resultado de la autenticación es redirigidio a otra página o muestra un mensaje de error.
+   */
+  async loginGoogle() {
+    try {
+      await this.authService.loginGoogle();
+      this.router.navigate(['/home']);
+    } catch (error) {
+      console.error('Error logging in with Google:', error);
+      this.presentToast('Ha ocurrido un error, intente nuevamente');
+    }
+  }
+
+
+  /**
+   * @function presentToast
+   * @param mensage  tipo string, recibe el mensaje a mostrar en pantalla
+   * @description crea y muestra en pantalla una advertencia
+   */
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
+  }
+
+
+  ngOnInit() {
+  }
+
 }
