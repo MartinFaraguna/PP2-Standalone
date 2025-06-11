@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { serverTimestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 import { Ticket } from 'src/models/user.model';
 import { DatabaseService } from 'src/app/services/database.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +18,10 @@ import { DatabaseService } from 'src/app/services/database.service';
 export class HomePage implements OnInit {
   ticket: Ticket[] = [];
 
-  constructor(private databaseSvc: DatabaseService) {
+  constructor(
+    private databaseSvc: DatabaseService,
+    private authService: AuthenticationService
+  ) {
 
     this.databaseSvc.getTickets().subscribe((data) => {
       this.ticket = data;
@@ -24,6 +30,15 @@ export class HomePage implements OnInit {
   }
 
   add() {
+
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
+
+  if (!currentUser) {
+    console.error('No hay usuario autenticado');
+    return;
+  }
+
     this.databaseSvc.getTickets().subscribe((data) => {
       this.ticket = data;
       console.log('Tickets obtenidos:', this.ticket);
@@ -33,10 +48,12 @@ export class HomePage implements OnInit {
         id: 0, // Asignar un ID único basado en la longitud del array
         nombre: 'Nuevo',
         apellido: 'Usuario',
-        usuario: 'nuevoUsuario',
+        usuario: currentUser.email,
         telefono: 123456789,
         descripcion: 'Descripción del nuevo ticket',
         estado: 'abierto',
+        created_at: serverTimestamp(),
+        userId: currentUser.uid,
       })
       .then((data) => {
         console.log('Ticket agregado exitosamente:');
