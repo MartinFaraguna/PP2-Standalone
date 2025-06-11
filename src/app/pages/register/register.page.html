@@ -1,0 +1,26 @@
+<div class="ion-page" id="main-content">
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="form">
+
+  <div>
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/"></ion-back-button>
+    </ion-buttons>
+  </div>
+
+  <div class="validators">
+    <ion-img class="logoStand" src= "assets/img/logoStand.png" alt="logoStand"></ion-img>
+    <h3 class="tit-login"> Registrarse</h3>
+
+    <ion-input type="email" label="email"  labelPlacement="floating" placeholder="fulanito@gmail.com" [(ngModel)]="email"></ion-input>
+
+    <ion-input type="password" label="Contraseña" labelPlacement="floating" [(ngModel)]="password" >
+      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+    </ion-input>
+
+    <ion-button class="btn-iniciar" type="submit" (click)="onRegister()">Registrarse</ion-button>
+
+  </div>
+</div>
+</ion-content>
+</div>
