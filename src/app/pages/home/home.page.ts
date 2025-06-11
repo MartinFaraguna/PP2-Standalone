@@ -24,9 +24,12 @@ export class HomePage implements OnInit {
   ) {
 
     this.databaseSvc.getTickets().subscribe((data) => {
-      this.ticket = data;
-      console.log('Tickets obtenidos:', this.ticket);
-    })
+  this.ticket = data.map(ticket => ({
+    ...ticket,
+    created_at: (ticket.created_at as any)?.toDate?.() ?? null
+  }));
+});
+
   }
 
   add() {
