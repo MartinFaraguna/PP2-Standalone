@@ -4,6 +4,7 @@ import { FieldValue } from "firebase/firestore/lite";
 export interface User { 
   uid: string;
   email: string;
+  role: string;
   password: string;
   name: string;
 }

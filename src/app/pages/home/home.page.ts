@@ -17,19 +17,31 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class HomePage implements OnInit {
   ticket: Ticket[] = [];
+  currentUserUid: string | null = null;
+
 
   constructor(
     private databaseSvc: DatabaseService,
     private authService: AuthenticationService
-  ) {
+  ) {}
 
+  async ngOnInit() {
+    this.currentUserUid = await this.authService.obtenerUid();
+
+    if (this.currentUserUid) {
+      this.loadTickets();
+    }
+  }
+
+  private loadTickets() {
     this.databaseSvc.getTickets().subscribe((data) => {
-  this.ticket = data.map(ticket => ({
-    ...ticket,
-    created_at: (ticket.created_at as any)?.toDate?.() ?? null
-  }));
-});
-
+      this.ticket = data
+        .filter(ticket => ticket.userId === this.currentUserUid)
+        .map(ticket => ({
+          ...ticket,
+          created_at: (ticket.created_at as any)?.toDate?.() ?? null
+        }));
+    });
   }
 
   add() {
@@ -72,5 +84,4 @@ export class HomePage implements OnInit {
     })
   }
   
-  ngOnInit() {}
 }
