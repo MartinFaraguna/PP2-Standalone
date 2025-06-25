@@ -8,15 +8,31 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from '@angular/fire/auth';
+import { User } from 'src/models/user.model';
+
+import { Firestore, doc, getDoc ,setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   private auth: Auth = inject(Auth);
+  private firestore: Firestore = inject(Firestore);
 
-  signUp(email: string, password: string) {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+
+  async signUp(email: string, password: string): Promise<void> {
+    const credential = await createUserWithEmailAndPassword(this.auth, email, password);
+    const uid = credential.user.uid;
+
+    const userData = {
+      uid,
+      email,
+      name: '',
+      role: 'user'
+    };
+
+    // Guarda en Firestore (colección 'users', documento con el UID)
+    await setDoc(doc(this.firestore, 'users', uid), userData);
   }
 
   logIn(email: string, password: string) {
@@ -48,4 +64,16 @@ export class AuthenticationService {
     }
     return null;
   }
+
+  async getUserDataByUid(uid: string): Promise<User | null> {
+  const userDocRef = doc(this.firestore, 'users', uid);
+  const userSnap = await getDoc(userDocRef);
+
+  if (userSnap.exists()) {
+    return userSnap.data() as User;
+  } else {
+    return null;
+  }
+}
+  
 }

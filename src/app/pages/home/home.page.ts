@@ -26,23 +26,30 @@ export class HomePage implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.currentUserUid = await this.authService.obtenerUid();
+  this.currentUserUid = await this.authService.obtenerUid();
 
-    if (this.currentUserUid) {
-      this.loadTickets();
+  if (this.currentUserUid) {
+    const userData = await this.authService.getUserDataByUid(this.currentUserUid);
+
+    if (userData) {
+      const isAdmin = userData.role === 'admin';
+      this.loadTickets(isAdmin);
     }
   }
+}
 
-  private loadTickets() {
-    this.databaseSvc.getTickets().subscribe((data) => {
-      this.ticket = data
-        .filter(ticket => ticket.userId === this.currentUserUid)
-        .map(ticket => ({
-          ...ticket,
-          created_at: (ticket.created_at as any)?.toDate?.() ?? null
-        }));
-    });
-  }
+
+  private loadTickets(verTodos: boolean) {
+  this.databaseSvc.getTickets().subscribe((data) => {
+    this.ticket = data
+      .filter(ticket => verTodos || ticket.userId === this.currentUserUid)
+      .map(ticket => ({
+        ...ticket,
+        created_at: (ticket.created_at as any)?.toDate?.() ?? null
+      }));
+  });
+}
+
 
   add() {
 
