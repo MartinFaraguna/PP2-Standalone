@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { AlertController } from '@ionic/angular';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,16 +28,17 @@ export class AuthGuard implements CanActivate {
 
   /**
    * @function getCurrentUser
-   * @description Retorna la promesa del usuario actual autenticado.
+   * @description Retorna el usuario autenticado actual.
    */
   private getCurrentUser(): Promise<any> {
     return new Promise((resolve, reject) => {
       const unsubscribe = onAuthStateChanged(this.auth, user => {
-        unsubscribe(); // evitamos múltiples ejecuciones
+        unsubscribe();
         resolve(user);
       }, reject);
     });
   }
+
 
   /**
    * @function presentAlert
