@@ -1,0 +1,30 @@
+.abierto {
+  border: 2px solid green;
+  border-radius: 10px;
+}
+
+ion-card-subtitle.abierto {
+  color: green;
+  border: none;
+}
+
+.cerrado {
+  border: 2px solid red;
+  border-radius: 10px;
+}
+
+ion-card-subtitle.cerrado {
+  color: red;
+  border: none;
+}
+
+.en-progreso {
+  border: 2px solid orange;
+  border-radius: 10px;
+}
+
+
+ion-card-subtitle.en-progreso {
+  color: orange;
+  border: none;
+}
