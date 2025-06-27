@@ -34,7 +34,7 @@ ion-input  {
 }
 
 .logo-img {
-  width: 160px; 
+  width: 210px; 
   max-width: 80%;
   height: auto;
 }
@@ -61,4 +61,8 @@ ion-input  {
   color: #0a2a66;
   margin: 20px 0 10px 0;
   animation: fadeInSlide 2s ease-in-out infinite;
+  color: #4a90e2;
+  -webkit-text-stroke: 3px #144297;
+  text-align: center;
+
 }

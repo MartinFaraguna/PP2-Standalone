@@ -1,28 +1,43 @@
 <div class="ion-page" id="main-content">
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="form">
+  <ion-content [fullscreen]="true" class="ion-padding">
 
-  <div>
-    <ion-buttons slot="start">
-      <ion-back-button default-href="/login"></ion-back-button>
-    </ion-buttons>
-  </div>
+    <ion-text class="bienvenida-texto">
+      <h1>REGISTRATE</h1>
+    </ion-text>
 
-  <div class="validators">
     <div class="logo-wrapper">
-      <img src="assets/img/alticketlogob.png" alt="Logo Alticket" class="logo-img" />
+      <img src="assets/alticket.png" alt="Logo Alticket" class="logo-img" />
     </div>
-    <h3 class="tit-login"> Registrarse</h3>
 
-    <ion-input type="email" label="email"  labelPlacement="floating" placeholder="fulanito@gmail.com" [(ngModel)]="email"></ion-input>
+    <form class="form">
 
-    <ion-input type="password" label="Contraseña" labelPlacement="floating" [(ngModel)]="password" >
-      <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-    </ion-input>
+      <ion-input 
+        type="email" 
+        label="Email" 
+        labelPlacement="floating" 
+        placeholder="Ingresa tu mail laboral" 
+        [(ngModel)]="email" 
+        name="email" 
+        fill="outline">
+      </ion-input>
 
-    <ion-button class="btn-iniciar" type="submit" (click)="onRegister()">Registrarse</ion-button>
+      <ion-input 
+        type="password" 
+        label="Contraseña" 
+        labelPlacement="floating" 
+        [(ngModel)]="password" 
+        name="password" 
+        fill="outline">
+        <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+      </ion-input>
 
-  </div>
-</div>
-</ion-content>
+      <ion-button 
+        type="submit" 
+        class="ion-margin-top" 
+        (click)="onRegister()">
+        Registrarse
+      </ion-button>
+
+    </form>
+  </ion-content>
 </div>

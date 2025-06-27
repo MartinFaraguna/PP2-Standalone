@@ -1,20 +1,47 @@
 ion-content {
-  --background: linear-gradient(180deg,rgba(198, 233, 254, 1) 0%, rgba(150, 188, 245, 1) 100%);
+  --background: linear-gradient(180deg, rgba(198, 233, 254, 1) 0%, rgb(68, 133, 231) 100%);
 }
 
-.form {
+form {
   background: #ffffff;
   padding: 20px;
   border-radius: 10px;
 }
 
+ion-img {
+  width: 210px;
+  max-width: 80%;
+  height: auto;
+}
+
+h1 {
+  color: #4a90e2;
+  -webkit-text-stroke: 3px #144297;
+  text-align: center;
+}
+
+.bienvenida-texto {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  color: #0a2a66;
+  margin: 20px 0 10px 0;
+  animation: fadeInSlide 2s ease-in-out infinite;
+}
+
 ion-button {
   --background: #4a90e2;
   --color: #ffffff;
-  --border-radius: 5px;
+  --border-radius: 11px;
   display: flex;
   justify-content: center;
-  padding:0px 40px;
+  padding: 0px 40px;
+}
+
+ion-input{
+  --color: rgb(65, 65, 165);
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .validators {
@@ -30,11 +57,22 @@ ion-button {
 }
 
 .logo-img {
-  width: 160px; 
+  width: 210px;
   max-width: 80%;
   height: auto;
 }
 
-.tit-login {
-  color: rgb(67, 67, 233);
+@keyframes fadeInSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
