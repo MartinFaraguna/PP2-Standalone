@@ -8,47 +8,116 @@
 <ion-content class="ion-padding">
   <!-- Contenedor principal del contenido con padding -->
 
+  <h1>Tickets abiertos / en progreso</h1>
   <ion-card *ngFor="let t of tickets">
     <!-- Recorre el array 'tickets' y crea una tarjeta por cada ticket -->
 
-    <ion-card-header>
-      <!-- Cabecera de la tarjeta con título y subtítulo -->
-      <ion-card-title>{{ t.descripcion }}</ion-card-title>
-      <!-- Muestra la descripción del ticket -->
-      <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
-      <!-- Muestra el estado actual del ticket -->
-    </ion-card-header>
+    <div *ngIf="t.estado === 'abierto' || t.estado === 'en progreso'">
+      <!-- Condición para mostrar solo tickets abiertos -->
 
-    <ion-card-content>
-      <!-- Contenido principal de la tarjeta -->
-      <p><strong>Nombre:</strong> {{ t.nombre }} {{ t.apellido }}</p>
-      <!-- Muestra el nombre completo del usuario -->
-      <p><strong>Usuario:</strong> {{ t.usuario }}</p>
-      <!-- Muestra el nombre de usuario -->
-      <p><strong>Teléfono:</strong> {{ t.telefono }}</p>
-      <!-- Muestra el teléfono -->
-      <p><strong>Fecha:</strong> {{ t.created_at | date: 'short' }}</p>
-      <!-- Muestra la fecha del ticket formateada -->
+      <ion-card-header>
+        <!-- Cabecera de la tarjeta con título y subtítulo -->
+        <ion-card-title>{{ t.nombre }} {{ t.apellido }}</ion-card-title>
 
-      <ion-item>
-        <!-- Item para seleccionar un nuevo estado -->
-        <ion-label>Nuevo Estado</ion-label>
-        <ion-select placeholder="Seleccionar estado" (ionChange)="changeEstado(t, $event.detail.value)">
-          <!-- Selector desplegable que llama a changeEstado al cambiar -->
-          <ion-select-option value="abierto">Abierto</ion-select-option>
-          <ion-select-option value="en progreso">En Progreso</ion-select-option>
-          <ion-select-option value="cerrado">Cerrado</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <!-- Muestra la descripción del ticket -->
+        <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
+        <!-- Muestra el estado actual del ticket -->
+      </ion-card-header>
 
-      <ion-button color="danger" expand="block" (click)="eliminar(t.id)">
-        <!-- Botón rojo que ocupa todo el ancho y llama a eliminar -->
-        Eliminar
-      </ion-button>
-    </ion-card-content>
+      <ion-card-content>
+        <!-- Contenido principal de la tarjeta -->
+
+        <p><strong>Descripcion :</strong>{{ t.descripcion }}</p>
+
+        <!-- Muestra el nombre completo del usuario -->
+        <p><strong>Usuario:</strong> {{ t.usuario }}</p>
+        <!-- Muestra el nombre de usuario -->
+        <p><strong>Teléfono:</strong> {{ t.telefono }}</p>
+        <!-- Muestra el teléfono -->
+        <p><strong>Fecha:</strong> {{ t.created_at | date: 'short' }}</p>
+        <!-- Muestra la fecha del ticket formateada -->
+
+        <ion-item>
+          <!-- Item para seleccionar un nuevo estado -->
+          <ion-label>Nuevo Estado</ion-label>
+          <ion-select
+            placeholder="Seleccionar estado"
+            (ionChange)="changeEstado(t, $event.detail.value)"
+          >
+            <!-- Selector desplegable que llama a changeEstado al cambiar -->
+            <ion-select-option value="abierto">Abierto</ion-select-option>
+            <ion-select-option value="en progreso"
+              >En Progreso</ion-select-option
+            >
+            <ion-select-option value="cerrado">Cerrado</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button color="danger" expand="block" (click)="eliminar(t.id)">
+          <!-- Botón rojo que ocupa todo el ancho y llama a eliminar -->
+          Eliminar
+        </ion-button>
+      </ion-card-content>
+    </div>
   </ion-card>
+
+  <h1>Tickets cerrados</h1>
+
+  <ion-card *ngFor="let t of tickets">
+    <!-- Recorre el array 'tickets' y crea una tarjeta por cada ticket -->
+
+    <div *ngIf="t.estado === 'cerrado'">
+      <!-- Condición para mostrar solo tickets abiertos -->
+
+      <ion-card-header>
+        <!-- Cabecera de la tarjeta con título y subtítulo -->
+        <ion-card-title>{{ t.nombre }} {{ t.apellido }}</ion-card-title>
+
+        <!-- Muestra la descripción del ticket -->
+        <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
+        <!-- Muestra el estado actual del ticket -->
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Contenido principal de la tarjeta -->
+
+        <p><strong>Descripcion :</strong>{{ t.descripcion }}</p>
+
+        <!-- Muestra el nombre completo del usuario -->
+        <p><strong>Usuario:</strong> {{ t.usuario }}</p>
+        <!-- Muestra el nombre de usuario -->
+        <p><strong>Teléfono:</strong> {{ t.telefono }}</p>
+        <!-- Muestra el teléfono -->
+        <p><strong>Fecha:</strong> {{ t.created_at | date: 'short' }}</p>
+        <!-- Muestra la fecha del ticket formateada -->
+
+        <ion-item>
+          <!-- Item para seleccionar un nuevo estado -->
+          <ion-label>Nuevo Estado</ion-label>
+          <ion-select
+            placeholder="Seleccionar estado"
+            (ionChange)="changeEstado(t, $event.detail.value)"
+          >
+            <!-- Selector desplegable que llama a changeEstado al cambiar -->
+            <ion-select-option value="abierto">Abierto</ion-select-option>
+            <ion-select-option value="en progreso"
+              >En Progreso</ion-select-option
+            >
+            <ion-select-option value="cerrado">Cerrado</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-button color="danger" expand="block" (click)="eliminar(t.id)">
+          <!-- Botón rojo que ocupa todo el ancho y llama a eliminar -->
+          Eliminar
+        </ion-button>
+      </ion-card-content>
+    </div>
+  </ion-card>
+
+
   <ion-button expand="full" color="medium" (click)="logout()">
-      <ion-icon slot="start" name="log-out-outline"></ion-icon>
-      Cerrar sesión
-    </ion-button>
+    <ion-icon slot="start" name="log-out-outline"></ion-icon>
+    Cerrar sesión
+  </ion-button>
 </ion-content>
