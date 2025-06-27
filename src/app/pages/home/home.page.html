@@ -6,7 +6,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <p>Contenido del menú</p> <!-- Contenido dentro del menú lateral -->
+    <ion-button (click)="goToAdmin()" class="panel">Panel de administrador</ion-button>
   </ion-content>
   <ion-button expand="full" color="medium" (click)="logout()">
       Cerrar sesión
@@ -51,7 +51,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Descripción</ion-label>
+          <ion-label position="floating">Descripción del error</ion-label>
           <ion-textarea formControlName="descripcion"></ion-textarea>
           <!-- Área de texto para descripción -->
         </ion-item>
