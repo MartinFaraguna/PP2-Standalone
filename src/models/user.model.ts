@@ -15,6 +15,7 @@ export interface Ticket {
   estado: EstadoTicket;
   created_at: Date;
   userId: string;
+  comentario_resolutor: string;
 }
 
 //  Modelo usado para crear un ticket nuevo

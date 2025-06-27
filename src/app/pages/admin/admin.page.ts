@@ -11,7 +11,9 @@ import { DatabaseService } from 'src/app/services/database.service';
 import { Ticket, EstadoTicket } from 'src/models/user.model';
 // Importa interfaces o tipos para tickets y estados desde el modelo de usuario
 import { Timestamp } from 'firebase/firestore';
-// Importa Timestamp de Firestore para manejar fechas específicas
+// Importa Timestamp de Firestore para manejar fechas específica
+import { AlertController } from '@ionic/angular';
+
 import { Router } from '@angular/router';
 import { getAuth, signOut } from 'firebase/auth';
 
@@ -32,6 +34,8 @@ interface RawTicket extends Omit<Ticket, 'created_at'> {
   // Ruta al archivo de estilos del componente
 })
 export class AdminPage implements OnInit {
+  showTextarea = false;  // controla visibilidad del textarea
+  comentario: string = '';  // guarda el texto escrito
   tickets: Ticket[] = [];
   // Arreglo para almacenar los tickets que se cargan desde la base de datos
 
@@ -40,7 +44,8 @@ export class AdminPage implements OnInit {
     // Inyecta el servicio para manejar datos
     private toastCtrl: ToastController,
     // Inyecta el controlador para mostrar mensajes toast
-    private router: Router
+    private router: Router,
+    private alert: AlertController
   ) {}
 
   ngOnInit() {
@@ -70,6 +75,44 @@ export class AdminPage implements OnInit {
       // Muestra mensaje de error al usuario
     }
   }
+
+  async abrirComentario(ticket: Ticket) {
+  const alert = await this.alert.create({
+    header: 'Dejar comentario',
+    inputs: [
+      {
+        name: 'comentario',
+        type: 'textarea',
+        placeholder: 'Escriba su comentario aquí'
+      }
+    ],
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel'
+      },
+      {
+        text: 'Guardar',
+        handler: async (data) => {
+          const comentario = data.comentario?.trim();
+          if (comentario) {
+            try {
+              await this.dbService.updateTicket(ticket.id, { comentario_resolutor: comentario });
+              this.showToast('Comentario guardado');
+            } catch (err) {
+              console.error(err);
+              this.showToast('Error al guardar comentario');
+            }
+          } else {
+            this.showToast('Comentario vacío');
+          }
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
 
   async eliminar(ticketId: string) {
     // Método para eliminar un ticket dado su ID

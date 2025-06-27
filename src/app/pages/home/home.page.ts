@@ -86,6 +86,7 @@ export class HomePage implements OnInit {
       estado: 'abierto',
       created_at: serverTimestamp(),
       userId: currentUser.uid,
+      comentario_resolutor: ""
     };
 
     try {

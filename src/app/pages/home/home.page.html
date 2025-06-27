@@ -8,6 +8,9 @@
   <ion-content class="ion-padding">
     <p>Contenido del menú</p> <!-- Contenido dentro del menú lateral -->
   </ion-content>
+  <ion-button expand="full" color="medium" (click)="logout()">
+      Cerrar sesión
+    </ion-button>
 </ion-menu>
 
 <!-- Contenedor principal de la página, debe tener el mismo id que contentId del menú -->
@@ -88,6 +91,11 @@
       <ion-item>
         <ion-label><strong>Estado:</strong> {{ item.estado }}</ion-label>
       </ion-item>
+      <ion-item>
+  <ion-label [ngClass]="{'disabled-text': !item.comentario_resolutor}">
+    <strong>Comentario:</strong> {{ item.comentario_resolutor || 'Sin comentario' }}
+  </ion-label>
+</ion-item>
       <ion-item>
         <ion-label><strong>Creado:</strong> {{ item.created_at | date:'medium' }}</ion-label>
         <!-- Muestra la fecha formateada con pipe date -->
