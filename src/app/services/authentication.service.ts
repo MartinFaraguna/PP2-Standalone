@@ -75,5 +75,12 @@ export class AuthenticationService {
     return null;
   }
 }
+
+async getUserRole(uid: string): Promise<string | null> {
+  const userDoc = await getDoc(doc(this.firestore, 'users', uid));
+  const userData = userDoc.data();
+  return userData?.['role'] ?? null;
+}
+
   
 }
