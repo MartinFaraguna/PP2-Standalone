@@ -1,38 +1,31 @@
 <div class="ion-page" id="main-content">
   <ion-content [fullscreen]="true" class="ion-padding">
-    <form class="form" >
 
-      <ion-input
-        label="Email"
-        labelPlacement="floating"
-        placeholder="Ingresa tu email laboral"
-        type="email"
-        name="email"
-        fill="outline"
-        [(ngModel)]="email"
-      ></ion-input>
+    <ion-text class="bienvenida-texto">
+      <h1>¡Bienvenidos!</h1>
+    </ion-text>
+
+    <div class="logo-wrapper">
+      <img src="assets/img/alticketlogob.png" alt="Logo Alticket" class="logo-img" />
+    </div>
+
+    <form class="form">
+
+      <ion-input label="Email" labelPlacement="floating" placeholder="Ingresa tu email laboral" type="email"
+        name="email" fill="outline" [(ngModel)]="email"></ion-input>
 
 
 
       <ion-icon name="arrow-redo-outline"></ion-icon>
-      <ion-input
-        label="Password"
-        labelPlacement="floating"
-        placeholder="Ingresa tu contraseña"
-        type="password"
-        name="password"
-        fill="outline"
-        [(ngModel)]="password"
-      >
+      <ion-input label="Password" labelPlacement="floating" placeholder="Ingresa tu contraseña" type="password"
+        name="password" fill="outline" [(ngModel)]="password">
       </ion-input>
 
 
 
 
-      <ion-button (click)="onLogin()" shape="round" type="submit" class="ion-margin-top"
-        >Iniciar Sesión</ion-button
-      >
-       <!-- Botón para registrarse -->
+      <ion-button (click)="onLogin()" shape="round" type="submit" class="ion-margin-top">Iniciar Sesión</ion-button>
+      <!-- Botón para registrarse -->
       <ion-button fill="clear" expand="block" class="ion-margin-top" (click)="goToRegister()">
         ¿No tenés cuenta? Registrate
       </ion-button>
