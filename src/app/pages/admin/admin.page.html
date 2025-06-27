@@ -1,13 +1,50 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>admin</ion-title>
+    <!-- Barra de herramientas con el título de la página -->
+    <ion-title>Gestión de Tickets</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">admin</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+  <!-- Contenedor principal del contenido con padding -->
+
+  <ion-card *ngFor="let t of tickets">
+    <!-- Recorre el array 'tickets' y crea una tarjeta por cada ticket -->
+
+    <ion-card-header>
+      <!-- Cabecera de la tarjeta con título y subtítulo -->
+      <ion-card-title>{{ t.descripcion }}</ion-card-title>
+      <!-- Muestra la descripción del ticket -->
+      <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
+      <!-- Muestra el estado actual del ticket -->
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Contenido principal de la tarjeta -->
+      <p><strong>Nombre:</strong> {{ t.nombre }} {{ t.apellido }}</p>
+      <!-- Muestra el nombre completo del usuario -->
+      <p><strong>Usuario:</strong> {{ t.usuario }}</p>
+      <!-- Muestra el nombre de usuario -->
+      <p><strong>Teléfono:</strong> {{ t.telefono }}</p>
+      <!-- Muestra el teléfono -->
+      <p><strong>Fecha:</strong> {{ t.created_at | date: 'short' }}</p>
+      <!-- Muestra la fecha del ticket formateada -->
+
+      <ion-item>
+        <!-- Item para seleccionar un nuevo estado -->
+        <ion-label>Nuevo Estado</ion-label>
+        <ion-select placeholder="Seleccionar estado" (ionChange)="changeEstado(t, $event.detail.value)">
+          <!-- Selector desplegable que llama a changeEstado al cambiar -->
+          <ion-select-option value="abierto">Abierto</ion-select-option>
+          <ion-select-option value="en progreso">En Progreso</ion-select-option>
+          <ion-select-option value="cerrado">Cerrado</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button color="danger" expand="block" (click)="eliminar(t.id)">
+        <!-- Botón rojo que ocupa todo el ancho y llama a eliminar -->
+        Eliminar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

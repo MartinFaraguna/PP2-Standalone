@@ -1,22 +1,31 @@
-import { Timestamp } from "firebase/firestore";
-import { FieldValue } from "firebase/firestore/lite";
 
-export interface User { 
-  uid: string;
-  email: string;
-  role: string;
-  password: string;
-  name: string;
-}
+import { Timestamp, FieldValue } from 'firebase/firestore';
 
+// Tipo literal reutilizable
+export type EstadoTicket = 'abierto' | 'cerrado' | 'en progreso';
+
+//  Modelo completo de ticket obtenido desde Firestore
 export interface Ticket {
-  id: number;
+  id: string;
   nombre: string;
   apellido: string;
   usuario: string;
   telefono: number;
   descripcion: string;
-  estado: 'abierto' | 'cerrado' | 'en progreso';
-  created_at: Timestamp | FieldValue;
+  estado: EstadoTicket;
+  created_at: Date;
   userId: string;
+}
+
+//  Modelo usado para crear un ticket nuevo
+export interface NewTicket extends Omit<Ticket, 'id' | 'created_at'> {
+  created_at: FieldValue;
+}
+
+// Modelo de usuario
+export interface User {
+  uid: string;
+  email: string;
+  role: 'user' | 'admin';
+  name: string;
 }

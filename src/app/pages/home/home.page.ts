@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { serverTimestamp } from 'firebase/firestore';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonicModule, ToastController } from '@ionic/angular';
 import { getAuth } from 'firebase/auth';
-import { Ticket } from 'src/models/user.model';
+import { serverTimestamp } from 'firebase/firestore';
+import { Ticket, NewTicket } from 'src/models/user.model';
 import { DatabaseService } from 'src/app/services/database.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -16,79 +16,103 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class HomePage implements OnInit {
-  ticket: Ticket[] = [];
-  currentUserUid: string | null = null;
+  tickets: Ticket[] = []; // Lista de tickets a mostrar
+  currentUserUid: string | null = null; // UID del usuario actual
+  isAdmin = false; // Bandera que indica si el usuario es administrador
 
+  ticketForm!: FormGroup; // Formulario reactivo para nuevo ticket
 
   constructor(
+    private fb: FormBuilder,
     private databaseSvc: DatabaseService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private toastController: ToastController
   ) {}
 
   async ngOnInit() {
-  this.currentUserUid = await this.authService.obtenerUid();
+    // Inicializa el formulario con validaciones
+    this.ticketForm = this.fb.group({
+      nombre: ['', Validators.required],
+      apellido: ['', Validators.required],
+      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/)]],
+      descripcion: ['', Validators.required],
+    });
 
-  if (this.currentUserUid) {
-    const userData = await this.authService.getUserDataByUid(this.currentUserUid);
+    // Obtiene el UID del usuario actual
+    this.currentUserUid = await this.authService.obtenerUid();
 
-    if (userData) {
-      const isAdmin = userData.role === 'admin';
-      this.loadTickets(isAdmin);
+    if (this.currentUserUid) {
+      // Obtiene información del usuario y verifica si es admin
+      const userData = await this.authService.getUserDataByUid(this.currentUserUid);
+      this.isAdmin = userData?.role === 'admin';
+      // Carga los tickets filtrando según rol
+      this.loadTickets(this.isAdmin);
     }
   }
-}
-
 
   private loadTickets(verTodos: boolean) {
-  this.databaseSvc.getTickets().subscribe((data) => {
-    this.ticket = data
-      .filter(ticket => verTodos || ticket.userId === this.currentUserUid)
-      .map(ticket => ({
-        ...ticket,
-        created_at: (ticket.created_at as any)?.toDate?.() ?? null
-      }));
-  });
-}
-
-
-  add() {
-
-  const auth = getAuth();
-  const currentUser = auth.currentUser;
-
-  if (!currentUser) {
-    console.error('No hay usuario autenticado');
-    return;
+    this.databaseSvc.getTickets().subscribe((data: Ticket[]) => {
+      // Filtra los tickets: todos si es admin, propios si no
+      this.tickets = data.filter(ticket => verTodos || ticket.userId === this.currentUserUid);
+    });
   }
 
-    this.databaseSvc.getTickets().subscribe((data) => {
-      this.ticket = data;
-      console.log('Tickets obtenidos:', this.ticket);
-    })
-    this.databaseSvc
-      .createTicket({
-        id: 0, // Asignar un ID único basado en la longitud del array
-        nombre: 'Nuevo',
-        apellido: 'Usuario',
-        usuario: currentUser.email,
-        telefono: 123456789,
-        descripcion: 'Descripción del nuevo ticket',
-        estado: 'abierto',
-        created_at: serverTimestamp(),
-        userId: currentUser.uid,
-      })
-      .then((data) => {
-        console.log('Ticket agregado exitosamente:');
-      })
-      .catch((error) => {
-        console.error('Error al agregar el ticket:', error);
-      });
+  async submitTicket() {
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (!currentUser) {
+      // Si no hay usuario autenticado, muestra mensaje
+      return this.presentToast('No hay usuario autenticado');
+    }
+
+    if (this.ticketForm.invalid) {
+      this.ticketForm.markAllAsTouched(); // Marca campos como tocados para mostrar errores
+      return;
+    }
+
+    const formValue = this.ticketForm.value;
+
+    // Crea un nuevo objeto tipo NewTicket con los datos del formulario
+    const nuevoTicket: NewTicket = {
+      nombre: formValue.nombre,
+      apellido: formValue.apellido,
+      usuario: currentUser.email ?? '',
+      telefono: Number(formValue.telefono),
+      descripcion: formValue.descripcion,
+      estado: 'abierto',
+      created_at: serverTimestamp(),
+      userId: currentUser.uid,
+    };
+
+    try {
+      // Guarda el ticket y da feedback visual
+      await this.databaseSvc.createTicket(nuevoTicket);
+      this.ticketForm.reset();
+      this.presentToast('Ticket enviado correctamente');
+      this.loadTickets(this.isAdmin); // Recarga lista
+    } catch (error) {
+      console.error('Error al enviar ticket:', error);
+      this.presentToast('Error al enviar el ticket');
+    }
   }
 
-  delete(ticketId: number) {
+  delete(ticketId: string) {
+    // Elimina ticket por ID y recarga lista
     this.databaseSvc.deleteTicket(ticketId).then(() => {
-      console.log('Ticket eliminado exitosamente' + ticketId);
-    })
+      console.log('Ticket eliminado exitosamente');
+      this.loadTickets(this.isAdmin);
+    });
   }
-  
+
+  private async presentToast(msg: string) {
+    // Muestra un toast con mensaje y estilo
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000,
+      position: 'top',
+      color: 'primary'
+    });
+    await toast.present();
+  }
 }
