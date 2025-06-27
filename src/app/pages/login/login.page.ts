@@ -28,49 +28,49 @@ export class LoginPage implements OnInit {
     private router: Router,
     private toastController: ToastController
 
-  ) {}
+  ) { }
 
   /**
    * @function login
    * @description esta función utiliza el servicio de autenticación 'authService' para autenticar al usuario con su correo y contraseña, dependiendiendo del resultado de la autenticación es redirigidio a otra página o muestra un mensaje de error. Tambien valida el formato del mail.
    */
- async onLogin() {
-  if (!validarEmail(this.email)) {
-    this.presentToast('Por favor, ingrese un email válido');
-    return;
-  }
-
-  try {
-    await this.authService.logIn(this.email, this.password);
-
-    // Obtener UID actual
-    const uid = await this.authService.obtenerUid();
-
-    if (!uid) {
-      this.presentToast('No se pudo obtener el UID del usuario');
+  async onLogin() {
+    if (!validarEmail(this.email)) {
+      this.presentToast('Por favor, ingrese un email válido');
       return;
     }
 
-    // Obtener datos del usuario
-    const userData = await this.authService.getUserDataByUid(uid);
+    try {
+      await this.authService.logIn(this.email, this.password);
 
-    if (!userData) {
-      this.presentToast('No se encontró información del usuario');
-      return;
+      // Obtener UID actual
+      const uid = await this.authService.obtenerUid();
+
+      if (!uid) {
+        this.presentToast('No se pudo obtener el UID del usuario');
+        return;
+      }
+
+      // Obtener datos del usuario
+      const userData = await this.authService.getUserDataByUid(uid);
+
+      if (!userData) {
+        this.presentToast('No se encontró información del usuario');
+        return;
+      }
+
+      // Redirigir según rol
+      if (userData.role === 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/home']);
+      }
+
+    } catch (error) {
+      console.error('Error logging in:', error);
+      this.presentToast('Error al iniciar sesión, revise los datos ingresados');
     }
-
-    // Redirigir según rol
-    if (userData.role === 'admin') {
-      this.router.navigate(['/admin']);
-    } else {
-      this.router.navigate(['/home']);
-    }
-
-  } catch (error) {
-    console.error('Error logging in:', error);
-    this.presentToast('Error al iniciar sesión, revise los datos ingresados');
   }
-}
 
 
 
@@ -105,8 +105,8 @@ export class LoginPage implements OnInit {
     toast.present();
   }
   goToRegister() {
-  this.router.navigate(['/register']);
-}
+    this.router.navigate(['/register']);
+  }
 
   ngOnInit() {
   }
