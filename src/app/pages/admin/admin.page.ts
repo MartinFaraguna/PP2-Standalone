@@ -12,6 +12,8 @@ import { Ticket, EstadoTicket } from 'src/models/user.model';
 // Importa interfaces o tipos para tickets y estados desde el modelo de usuario
 import { Timestamp } from 'firebase/firestore';
 // Importa Timestamp de Firestore para manejar fechas específicas
+import { Router } from '@angular/router';
+import { getAuth, signOut } from 'firebase/auth';
 
 // Interfaz que extiende Ticket pero redefine 'created_at' como Timestamp para manejo interno
 interface RawTicket extends Omit<Ticket, 'created_at'> {
@@ -36,8 +38,9 @@ export class AdminPage implements OnInit {
   constructor(
     private dbService: DatabaseService,
     // Inyecta el servicio para manejar datos
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
     // Inyecta el controlador para mostrar mensajes toast
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -92,4 +95,14 @@ export class AdminPage implements OnInit {
     toast.present();
     // Presenta el toast al usuario
   }
+  async logout() {
+  try {
+    await signOut(getAuth());
+    this.router.navigate(['/login']);
+    this.showToast('Sesión cerrada correctamente');
+  } catch (err) {
+    console.error('Error al cerrar sesión:', err);
+    this.showToast('Error al cerrar sesión');
+  }
+}
 }

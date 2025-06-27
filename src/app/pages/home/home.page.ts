@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule, ToastController } from '@ionic/angular';
-import { getAuth } from 'firebase/auth';
+import { getAuth, signOut} from 'firebase/auth';
 import { serverTimestamp } from 'firebase/firestore';
 import { Ticket, NewTicket } from 'src/models/user.model';
 import { DatabaseService } from 'src/app/services/database.service';
+import { Router } from '@angular/router';
+
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -26,7 +28,8 @@ export class HomePage implements OnInit {
     private fb: FormBuilder,
     private databaseSvc: DatabaseService,
     private authService: AuthenticationService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
@@ -115,4 +118,17 @@ export class HomePage implements OnInit {
     });
     await toast.present();
   }
+
+   async logout() {
+    try {
+      const auth = getAuth();
+      await signOut(auth);
+      this.router.navigate(['/login']);
+      this.presentToast('Sesión cerrada correctamente');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+      this.presentToast('Error al cerrar sesión');
+    }
+  }
 }
+
