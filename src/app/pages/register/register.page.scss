@@ -22,3 +22,19 @@ ion-button {
   margin-top: 5px;
   color: red;
 }
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 160px; 
+  max-width: 80%;
+  height: auto;
+}
+
+.tit-login {
+  color: rgb(67, 67, 233);
+}

@@ -4,12 +4,14 @@
 
   <div>
     <ion-buttons slot="start">
-      <ion-back-button default-href="/"></ion-back-button>
+      <ion-back-button default-href="/login"></ion-back-button>
     </ion-buttons>
   </div>
 
   <div class="validators">
-    <ion-img class="logoStand" src= "assets/img/logoStand.png" alt="logoStand"></ion-img>
+    <div class="logo-wrapper">
+      <img src="assets/img/alticketlogob.png" alt="Logo Alticket" class="logo-img" />
+    </div>
     <h3 class="tit-login"> Registrarse</h3>
 
     <ion-input type="email" label="email"  labelPlacement="floating" placeholder="fulanito@gmail.com" [(ngModel)]="email"></ion-input>
