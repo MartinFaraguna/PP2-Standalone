@@ -40,17 +40,21 @@
         <ion-item>
           <!-- Item para seleccionar un nuevo estado -->
           <ion-label>Nuevo Estado</ion-label>
-          <ion-select
-            placeholder="Seleccionar estado"
-            (ionChange)="changeEstado(t, $event.detail.value)"
-          >
+          <ion-select placeholder="Seleccionar estado" (ionChange)="changeEstado(t, $event.detail.value)">
             <!-- Selector desplegable que llama a changeEstado al cambiar -->
             <ion-select-option value="abierto">Abierto</ion-select-option>
-            <ion-select-option value="en progreso"
-              >En Progreso</ion-select-option
-            >
+            <ion-select-option value="en progreso">En Progreso</ion-select-option>
             <ion-select-option value="cerrado">Cerrado</ion-select-option>
           </ion-select>
+        </ion-item>
+
+          <ion-button expand="block" (click)="abrirComentario(t)">
+            Dejar comentario
+          </ion-button>
+
+        <!-- Textarea visible solo si showTextarea es true -->
+        <ion-item *ngIf="showTextarea">
+          <ion-textarea placeholder="Escriba su comentario" [(ngModel)]="comentario" autoGrow="true"></ion-textarea>
         </ion-item>
 
         <ion-button color="danger" expand="block" (click)="eliminar(t.id)">
@@ -94,15 +98,10 @@
         <ion-item>
           <!-- Item para seleccionar un nuevo estado -->
           <ion-label>Nuevo Estado</ion-label>
-          <ion-select
-            placeholder="Seleccionar estado"
-            (ionChange)="changeEstado(t, $event.detail.value)"
-          >
+          <ion-select placeholder="Seleccionar estado" (ionChange)="changeEstado(t, $event.detail.value)">
             <!-- Selector desplegable que llama a changeEstado al cambiar -->
             <ion-select-option value="abierto">Abierto</ion-select-option>
-            <ion-select-option value="en progreso"
-              >En Progreso</ion-select-option
-            >
+            <ion-select-option value="en progreso">En Progreso</ion-select-option>
             <ion-select-option value="cerrado">Cerrado</ion-select-option>
           </ion-select>
         </ion-item>
