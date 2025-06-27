@@ -9,10 +9,10 @@
   <!-- Contenedor principal del contenido con padding -->
 
   <h1>Tickets abiertos / en progreso</h1>
-  <ion-card *ngFor="let t of tickets">
+  <ion-card  *ngFor="let t of tickets">
     <!-- Recorre el array 'tickets' y crea una tarjeta por cada ticket -->
 
-    <div *ngIf="t.estado === 'abierto' || t.estado === 'en progreso'">
+    <div [ngClass]="formatEstado(t.estado)" *ngIf="t.estado === 'abierto' || t.estado === 'en progreso'">
       <!-- Condición para mostrar solo tickets abiertos -->
 
       <ion-card-header>
@@ -20,7 +20,7 @@
         <ion-card-title>{{ t.nombre }} {{ t.apellido }}</ion-card-title>
 
         <!-- Muestra la descripción del ticket -->
-        <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
+        <ion-card-subtitle [ngClass]="formatEstado(t.estado)">Estado actual: {{ t.estado }}</ion-card-subtitle>
         <!-- Muestra el estado actual del ticket -->
       </ion-card-header>
 
@@ -67,18 +67,18 @@
 
   <h1>Tickets cerrados</h1>
 
-  <ion-card *ngFor="let t of tickets">
+  <ion-card  *ngFor="let t of tickets">
     <!-- Recorre el array 'tickets' y crea una tarjeta por cada ticket -->
 
-    <div *ngIf="t.estado === 'cerrado'">
+    <div [ngClass]="formatEstado(t.estado)" *ngIf="t.estado === 'cerrado'">
       <!-- Condición para mostrar solo tickets abiertos -->
 
       <ion-card-header>
         <!-- Cabecera de la tarjeta con título y subtítulo -->
-        <ion-card-title>{{ t.nombre }} {{ t.apellido }}</ion-card-title>
+        <ion-card-title >{{ t.nombre }} {{ t.apellido }}</ion-card-title>
 
         <!-- Muestra la descripción del ticket -->
-        <ion-card-subtitle>Estado actual: {{ t.estado }}</ion-card-subtitle>
+        <ion-card-subtitle [ngClass]="t.estado">Estado actual: {{ t.estado }}</ion-card-subtitle>
         <!-- Muestra el estado actual del ticket -->
       </ion-card-header>
 

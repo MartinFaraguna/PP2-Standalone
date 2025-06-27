@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 // Importa los decoradores y ciclo de vida OnInit de Angular
 import { CommonModule } from '@angular/common';
 // Importa funcionalidades comunes de Angular como *ngFor, *ngIf
@@ -24,7 +24,7 @@ interface RawTicket extends Omit<Ticket, 'created_at'> {
 
 @Component({
   selector: 'app-admin',
-  standalone: true, 
+  standalone: true,
   // Indica que es un componente standalone sin necesidad de NgModule
   imports: [IonicModule, CommonModule, FormsModule],
   // Importa módulos necesarios para que funcione el componente
@@ -131,21 +131,24 @@ export class AdminPage implements OnInit {
   private async showToast(message: string) {
     // Método privado para mostrar mensajes toast en pantalla
     const toast = await this.toastCtrl.create({
-      message,         // Mensaje que se mostrará
-      duration: 2000,  // Duración en milisegundos (2 segundos)
+      message, // Mensaje que se mostrará
+      duration: 2000, // Duración en milisegundos (2 segundos)
       position: 'bottom', // Posición del toast en pantalla
     });
     toast.present();
     // Presenta el toast al usuario
   }
   async logout() {
-  try {
-    await signOut(getAuth());
-    this.router.navigate(['/login']);
-    this.showToast('Sesión cerrada correctamente');
-  } catch (err) {
-    console.error('Error al cerrar sesión:', err);
-    this.showToast('Error al cerrar sesión');
+    try {
+      await signOut(getAuth());
+      this.router.navigate(['/login']);
+      this.showToast('Sesión cerrada correctamente');
+    } catch (err) {
+      console.error('Error al cerrar sesión:', err);
+      this.showToast('Error al cerrar sesión');
+    }
   }
-}
+  formatEstado(estado: string): string {
+    return estado.toLowerCase().replace(/\s/g, '-'); // ej: "en progreso" → "en-progreso"
+  }
 }
