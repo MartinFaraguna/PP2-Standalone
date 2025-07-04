@@ -62,6 +62,13 @@ ion-input{
   height: auto;
 }
 
+.custom-back-button {
+  position: fixed;
+  top: 16px;   /* ajusta el margen superior */
+  left: 16px;  /* ajusta el margen izquierdo */
+  z-index: 1000; /* asegura que quede por encima */
+}
+
 @keyframes fadeInSlide {
   0% {
     opacity: 0;

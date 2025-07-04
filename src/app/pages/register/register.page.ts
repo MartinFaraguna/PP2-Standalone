@@ -68,7 +68,6 @@ async presentToast(message: string) {
   toast.present();
 }
 
-
   ngOnInit() {
   }
 
