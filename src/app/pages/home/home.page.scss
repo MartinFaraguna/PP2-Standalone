@@ -1,17 +1,21 @@
 ion-list {
-  margin: 20px;
+  // // margin: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 0px;
 }
 
 ion-item {
-  --background: #f9f9f9;
-  --color: #333;
-  margin: 0px !important;
+  // --background: #f9f9f9;
+  // --color: #333;
+  margin: 20px 0px;
   padding: 0px !important;
   border-radius: 4px;
   width: 100%;
+}
+
+.panel {
+  display: flex;
 }
 
 .selector-eliminar {

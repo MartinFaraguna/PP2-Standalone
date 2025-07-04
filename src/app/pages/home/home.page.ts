@@ -131,5 +131,10 @@ export class HomePage implements OnInit {
       this.presentToast('Error al cerrar sesión');
     }
   }
+
+  goToAdmin() {
+    // Navega a la página de administración
+    this.router.navigate(['/admin']); 
+  }
 }
 
