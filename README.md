@@ -65,3 +65,30 @@ Agregar comentarios a un ticket:
 Cambiar estado del ticket:  
 (Abierto, Cerrado, En Proceso)  
 ![Cambiar estado](src/assets/readme_resources/ADMIN3.png)
+
+---
+
+### 🛠️ Otorgar rol de administrador
+
+Para otorgar el rol de **administrador**, primero necesitas tener un usuario registrado con email y contraseña.
+
+---
+![Set admin](src/assets/readme_resources/SETADMIN.png)
+
+1️⃣ **Ingresar a la consola de Firebase:**  
+   👉 [https://console.firebase.google.com/](https://console.firebase.google.com/project/ticketera-pp2/overview)
+
+2️⃣ **Ir a la pestaña Firestore Database:**  
+   👉 Dentro de tu proyecto, selecciona **Firestore Database** en el menú lateral.
+
+3️⃣ **Editar la colección `users`:**  
+   - Abre la colección `users`.
+   - Selecciona el documento del usuario al que deseas otorgar permisos de administrador.
+   - Localiza el campo `role` (por defecto está como `"user"`).
+   - Edita el valor y reemplázalo por `"admin"`.
+
+---
+
+✅ **Listo:**  
+Al volver a iniciar sesión con este usuario (email y contraseña), será redirigido automáticamente al **panel de administrador**.
+
